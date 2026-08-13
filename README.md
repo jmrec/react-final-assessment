@@ -1,6 +1,6 @@
-# React + TypeScript + Vite
+# ☕ Coffee Shop UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React (Vite + TypeScript) single-page front-end for the Phase 2 coffee shop Spring Boot API. It provides CRUD menu management, order tracking, React Router navigation, and an agentic AI "barista" chat.
 
 Currently, two official plugins are available:
 

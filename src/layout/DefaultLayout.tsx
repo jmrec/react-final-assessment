@@ -27,14 +27,13 @@ export default function DefaultLayout() {
           <span className="font-heading text-[11px] tracking-[0.5em] text-muted-foreground">
             珈琲
           </span>
-          {/* <span className="h-1.5 w-1.5 rounded-full bg-vermilion" /> */}
         </div>
       </div>
 
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-6">
           <NavLink to="/" className="flex items-center gap-3">
-            <span className="hidden md:relative md:grid h-9 w-9 shrink-0 place-items-center">
+            <span className="relative md:grid h-9 w-9 shrink-0 place-items-center">
               <span className="absolute inset-0 rounded-full bg-vermilion" />
               <span className="absolute inset-1.5 rounded-full border border-card/80" />
             </span>
@@ -42,7 +41,7 @@ export default function DefaultLayout() {
               <span className="font-heading text-lg font-semibold tracking-wide">
                 JM's Coffee Shop
               </span>
-              <span className="hidden md:block mt-1.5 text-[10px] tracking-[0.35em] text-muted-foreground">
+              <span className="relative mt-1.5 text-[10px] tracking-[0.35em] text-muted-foreground">
                 喫茶 KISSA
               </span>
             </span>

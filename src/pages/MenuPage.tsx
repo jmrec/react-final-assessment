@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Sheet } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -68,6 +69,10 @@ export default function MenuPage() {
     undefined,
   );
 
+  const navigate = useNavigate();
+  const { id: menuId } = useParams<{ id: string }>();
+  const openedIdRef = useRef<number | undefined>(undefined);
+
   const {
     data: allMenuItems = [],
     isLoading: isLoadingAll,
@@ -85,6 +90,41 @@ export default function MenuPage() {
   const menuItems = selectedCategory != null ? filteredMenuItems : allMenuItems;
   const isLoading = selectedCategory != null ? isLoadingCategory : isLoadingAll;
   const isError = selectedCategory != null ? isErrorCategory : isErrorAll;
+
+  useEffect(() => {
+    if (menuId == null || menuId === "") {
+      openedIdRef.current = undefined;
+      return;
+    }
+
+    const parsedId = Number(menuId);
+
+    if (!Number.isInteger(parsedId) || parsedId <= 0) {
+      openedIdRef.current = undefined;
+      navigate("/404", { replace: true });
+      return;
+    }
+
+    if (openedIdRef.current === parsedId) return;
+
+    const item = menuItems.find((m) => m.id === parsedId);
+    if (item) {
+      openedIdRef.current = parsedId;
+      setSelectedItem({
+        name: item.name ?? "",
+        price: item.price ?? 0,
+        category: item.category ?? "",
+        available: item.available ?? false,
+      });
+      setSelectedId(parsedId);
+      setIsOpen(true);
+      return;
+    }
+
+    if (!isLoading && !isError) {
+      navigate("/404", { replace: true });
+    }
+  }, [menuId, menuItems, isLoading, isError, navigate]);
 
   const [deleteMenuById, { isLoading: isDeleting }] =
     useDeleteMenuByIdMutation();
@@ -104,6 +144,7 @@ export default function MenuPage() {
   };
 
   const handleCreateOpen = () => {
+    navigate("/menu/create");
     setSelectedItem(null);
     setSelectedId(undefined);
     setIsOpen(true);
@@ -113,14 +154,7 @@ export default function MenuPage() {
     e.stopPropagation();
     if (!item.id) return;
 
-    setSelectedItem({
-      name: item.name ?? "",
-      price: item.price ?? 0,
-      category: item.category ?? "",
-      available: item.available ?? false,
-    });
-    setSelectedId(item.id);
-    setIsOpen(true);
+    navigate(`/menu/${item.id}/edit`);
   };
 
   const handleDeleteItem = async (
@@ -143,11 +177,20 @@ export default function MenuPage() {
   };
 
   const handleClose = () => {
+    navigate("/menu", { replace: true });
     setIsOpen(false);
     setTimeout(() => {
       setSelectedItem(null);
       setSelectedId(undefined);
     }, 300);
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setIsOpen(true);
+    } else {
+      handleClose();
+    }
   };
 
   return (
@@ -166,7 +209,8 @@ export default function MenuPage() {
               <SelectItem value="all">All Categories</SelectItem>
               <SelectItem value="coffee">Coffee</SelectItem>
               <SelectItem value="bakery">Bakery</SelectItem>
-              <SelectItem value="merch">Merchandise</SelectItem>
+              <SelectItem value="pastry">Pastry</SelectItem>
+              <SelectItem value="cold drink">Cold Drink</SelectItem>
             </SelectContent>
           </Select>
           <Button onClick={handleCreateOpen}>Add Item</Button>
@@ -310,7 +354,7 @@ export default function MenuPage() {
         </>
       )}
 
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <MenuManageSheet
           existingMenuItem={selectedItem}
           menuItemId={selectedId}

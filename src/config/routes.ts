@@ -6,6 +6,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import React from "react";
+import { Navigate } from "react-router-dom";
 
 export interface RouteConfig {
   label: string;
@@ -21,6 +22,10 @@ const BaristaPage = React.lazy(() => import("@/pages/BaristaPage"));
 const OrdersPage = React.lazy(() => import("@/pages/OrdersPage"));
 const ErrorPage = React.lazy(() => import("@/pages/ErrorPage"));
 const OrdersPageShow = React.lazy(() => import("@/pages/OrdersPageShow"));
+const PatronsPage = React.lazy(() => import("@/pages/PatronsPage"));
+
+const NotFoundRedirect: React.ComponentType = () =>
+  React.createElement(Navigate, { to: "/404", replace: true });
 
 export const routesConfig: RouteConfig[] = [
   {
@@ -36,6 +41,18 @@ export const routesConfig: RouteConfig[] = [
     icon: Coffee,
     element: MenuPage,
     showInNav: true,
+  },
+  {
+    label: "Add Menu Item",
+    path: "/menu/create",
+    element: MenuPage,
+    showInNav: false,
+  },
+  {
+    label: "Edit Menu Item",
+    path: "/menu/:id/edit",
+    element: MenuPage,
+    showInNav: false,
   },
   {
     label: "Barista",
@@ -58,9 +75,22 @@ export const routesConfig: RouteConfig[] = [
     showInNav: false,
   },
   {
+    label: "Patrons",
+    path: "/patrons",
+    icon: Users,
+    element: PatronsPage,
+    showInNav: true,
+  },
+  {
     label: "Error Page",
-    path: "*",
+    path: "/404",
     element: ErrorPage,
+    showInNav: false,
+  },
+  {
+    label: "Not Found",
+    path: "*",
+    element: NotFoundRedirect,
     showInNav: false,
   }
 ];

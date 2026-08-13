@@ -92,7 +92,8 @@ export const MenuForm: React.FC<MenuFormProps> = ({
                 <SelectContent>
                   <SelectItem value="coffee">Coffee</SelectItem>
                   <SelectItem value="bakery">Bakery</SelectItem>
-                  <SelectItem value="merch">Merchandise</SelectItem>
+                  <SelectItem value="pastry">Pastry</SelectItem>
+                  <SelectItem value="cold drink">Cold Drink</SelectItem>
                 </SelectContent>
               </Select>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

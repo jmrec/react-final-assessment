@@ -1,4 +1,5 @@
 import { MenuForm } from "@/components/MenuForm";
+import { useNavigate } from "react-router-dom";
 import type { MenuFormData } from "@/schemas/menuFormSchema";
 import { useCreate1Mutation, useUpdateMutation } from "@/store/gen/menu";
 import { useMenuForm } from "@/hooks/useMenuForm";
@@ -21,6 +22,7 @@ export const MenuManageSheet: React.FC<MenuManageSheetProps> = ({
   menuItemId,
   onClose,
 }) => {
+  const navigate = useNavigate();
   const [createMenuItem] = useCreate1Mutation();
   const [updateMenuItem] = useUpdateMutation();
   const { menuCreated, menuUpdated, menuCreateFailed, menuUpdateFailed } =
@@ -47,6 +49,7 @@ export const MenuManageSheet: React.FC<MenuManageSheetProps> = ({
         menuCreated(data.name);
       }
       onClose();
+      navigate("/menu");
     } catch (error) {
       console.error("Failed to save menu item:", error);
       if (isEdit) {
