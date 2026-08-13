@@ -1,5 +1,5 @@
 import { MenuForm } from "@/components/MenuForm";
-import type { MenuFormData } from "@/schemas/menuSchema";
+import type { MenuFormData } from "@/schemas/menuFormSchema";
 import { useCreate1Mutation, useUpdateMutation } from "@/store/gen/menu";
 import { useMenuForm } from "@/hooks/useMenuForm";
 import {

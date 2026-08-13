@@ -1,34 +1,44 @@
 import { api } from "../emptyApi";
-const injectedRtkApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    getAll: build.query<GetAllApiResponse, GetAllApiArg>({
-      query: () => ({ url: `/orders` }),
-    }),
-    create: build.mutation<CreateApiResponse, CreateApiArg>({
-      query: (queryArg) => ({
-        url: `/orders`,
-        method: "POST",
-        body: queryArg.orderRequest,
+export const addTagTypes = ["order-controller"] as const;
+const injectedRtkApi = api
+  .enhanceEndpoints({
+    addTagTypes,
+  })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      getAll: build.query<GetAllApiResponse, GetAllApiArg>({
+        query: () => ({ url: `/orders` }),
+        providesTags: ["order-controller"],
+      }),
+      create: build.mutation<CreateApiResponse, CreateApiArg>({
+        query: (queryArg) => ({
+          url: `/orders`,
+          method: "POST",
+          body: queryArg.orderRequest,
+        }),
+        invalidatesTags: ["order-controller"],
+      }),
+      markReady: build.mutation<MarkReadyApiResponse, MarkReadyApiArg>({
+        query: (queryArg) => ({
+          url: `/orders/${queryArg.id}/ready`,
+          method: "POST",
+        }),
+        invalidatesTags: ["order-controller"],
+      }),
+      markPaid: build.mutation<MarkPaidApiResponse, MarkPaidApiArg>({
+        query: (queryArg) => ({
+          url: `/orders/${queryArg.id}/pay`,
+          method: "POST",
+        }),
+        invalidatesTags: ["order-controller"],
+      }),
+      getById1: build.query<GetById1ApiResponse, GetById1ApiArg>({
+        query: (queryArg) => ({ url: `/orders/${queryArg.id}` }),
+        providesTags: ["order-controller"],
       }),
     }),
-    markReady: build.mutation<MarkReadyApiResponse, MarkReadyApiArg>({
-      query: (queryArg) => ({
-        url: `/orders/${queryArg.id}/ready`,
-        method: "POST",
-      }),
-    }),
-    markPaid: build.mutation<MarkPaidApiResponse, MarkPaidApiArg>({
-      query: (queryArg) => ({
-        url: `/orders/${queryArg.id}/pay`,
-        method: "POST",
-      }),
-    }),
-    getById1: build.query<GetById1ApiResponse, GetById1ApiArg>({
-      query: (queryArg) => ({ url: `/orders/${queryArg.id}` }),
-    }),
-  }),
-  overrideExisting: false,
-});
+    overrideExisting: false,
+  });
 export { injectedRtkApi as enhancedApi };
 export type GetAllApiResponse = /** status 200 OK */ OrderResponse[];
 export type GetAllApiArg = void;

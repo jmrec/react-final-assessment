@@ -1,16 +1,35 @@
+"use client";
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Sheet } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { MenuManageSheet } from "@/components/menu/MenuManageSheet";
-import type { MenuFormData } from "@/schemas/menuSchema";
-import { useGetAll1Query, type MenuItemResponse } from "@/store/gen/menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import type { MenuFormData } from "@/schemas/menuFormSchema";
+import {
+  useGetAll1Query,
+  type MenuItemResponse,
+  useDeleteMenuByIdMutation,
+} from "@/store/gen/menu";
 
 export default function MenuPage() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuFormData | null>(null);
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
   const { data: menuItems = [], isLoading, isError, error } = useGetAll1Query();
+  const [deleteMenuById, { isLoading: isDeleting }] =
+    useDeleteMenuByIdMutation();
 
   const handleCreateOpen = () => {
     setSelectedItem(null);
@@ -18,7 +37,8 @@ export default function MenuPage() {
     setIsOpen(true);
   };
 
-  const handleEditOpen = (item: MenuItemResponse) => {
+  const handleEditOpen = (e: React.MouseEvent, item: MenuItemResponse) => {
+    e.stopPropagation();
     if (!item.id) return;
 
     setSelectedItem({
@@ -29,6 +49,22 @@ export default function MenuPage() {
     });
     setSelectedId(item.id);
     setIsOpen(true);
+  };
+
+  const handleDeleteItem = async (
+    e: React.MouseEvent,
+    id: number | undefined,
+  ) => {
+    e.stopPropagation();
+    if (!id) return;
+
+    if (window.confirm("Are you sure you want to remove this item?")) {
+      try {
+        await deleteMenuById({ id }).unwrap();
+      } catch (err) {
+        console.error("Failed to delete the menu item:", err);
+      }
+    }
   };
 
   const handleClose = () => {
@@ -59,29 +95,66 @@ export default function MenuPage() {
       )}
 
       {!isLoading && !isError && (
-        <div className="grid gap-4">
-          {menuItems.length === 0 ? (
-            <p className="text-gray-500 py-4 text-center">
-              No menu items found. Add your first item above!
-            </p>
-          ) : (
-            menuItems.map((item) => (
-              <div
-                key={item.id}
-                className="p-4 border rounded-md flex justify-between items-center bg-white shadow-sm"
-              >
-                <div className="flex flex-col">
-                  <span className="font-medium">{item.name}</span>
-                  <span className="text-sm text-gray-500 capitalize">
-                    {item.category} · ${item.price?.toFixed(2)}
-                  </span>
-                </div>
-                <Button variant="outline" onClick={() => handleEditOpen(item)}>
-                  Edit
-                </Button>
-              </div>
-            ))
-          )}
+        <div className="rounded-md border bg-white shadow-sm overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[40%] text-center">Name</TableHead>
+                <TableHead className="w-[30%] text-center">Category</TableHead>
+                <TableHead className="w-[15%] text-center">Price</TableHead>
+                <TableHead className="w-[15%] text-center">
+                  Available?
+                </TableHead>
+                <TableHead className="w-[15%] text-center">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {menuItems.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className="h-24 text-center text-gray-500"
+                  >
+                    No menu items found. Add your first item above!
+                  </TableCell>
+                </TableRow>
+              ) : (
+                menuItems.map((item: MenuItemResponse) => (
+                  <TableRow
+                    key={item.id}
+                    className="cursor-pointer hover:bg-gray-50 select-none"
+                    onClick={() => navigate(`/menu/${item.id}`)}
+                  >
+                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell className="capitalize text-gray-600">
+                      {item.category}
+                    </TableCell>
+                    <TableCell>${item.price?.toFixed(2)}</TableCell>
+                    <TableCell>{item.available ? "Yes" : "No"}</TableCell>
+                    <TableCell className="text-right">
+                      <ButtonGroup>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => handleEditOpen(e, item)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          disabled={isDeleting}
+                          onClick={(e) => handleDeleteItem(e, item.id)}
+                        >
+                          Delete
+                        </Button>
+                      </ButtonGroup>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </div>
       )}
 

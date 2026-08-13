@@ -1,16 +1,22 @@
 import { api } from "../emptyApi";
-const injectedRtkApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    ask: build.mutation<AskApiResponse, AskApiArg>({
-      query: (queryArg) => ({
-        url: `/agent`,
-        method: "POST",
-        body: queryArg.body,
+export const addTagTypes = ["agent-controller"] as const;
+const injectedRtkApi = api
+  .enhanceEndpoints({
+    addTagTypes,
+  })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      ask: build.mutation<AskApiResponse, AskApiArg>({
+        query: (queryArg) => ({
+          url: `/agent`,
+          method: "POST",
+          body: queryArg.body,
+        }),
+        invalidatesTags: ["agent-controller"],
       }),
     }),
-  }),
-  overrideExisting: false,
-});
+    overrideExisting: false,
+  });
 export { injectedRtkApi as enhancedApi };
 export type AskApiResponse = /** status 200 OK */ string;
 export type AskApiArg = {

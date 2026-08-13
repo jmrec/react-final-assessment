@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { menuSchema, type MenuFormData } from "@/schemas/menuSchema";
+import { menuFormSchema, type MenuFormData } from "@/schemas/menuFormSchema";
 
 interface useMenuFormProps {
   initialData?: MenuFormData | null;
@@ -15,7 +15,7 @@ export const useMenuForm = ({ initialData, onSubmit }: useMenuFormProps) => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<MenuFormData>({
-    resolver: zodResolver(menuSchema),
+    resolver: zodResolver(menuFormSchema),
     defaultValues: initialData || { name: "", price: 0, category: "" },
   });
 

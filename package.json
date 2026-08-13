@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "codegen:zod": "ts-to-zod ./src/store/gen/menu.ts ./src/schemas/gen/menu.zod.ts --skipValidation",
-    "codegen:rtk": "npx @rtk-query/codegen-openapi openapi-config.ts"
+    "codegen:rtk": "npx @rtk-query/codegen-openapi openapi-config.ts",
+    "codegen:all": "npm run codegen:rtk && npm run codegen:zod"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

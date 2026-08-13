@@ -1,6 +1,6 @@
 import { z, ZodNumber } from "zod";
 
-export const menuSchema = z.object({
+export const menuFormSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1, "Name is required"),
   category: z.string().min(1, "Please select a category"),
@@ -10,4 +10,4 @@ export const menuSchema = z.object({
   isAvailable: z.boolean("Specify if available"),
 });
 
-export type MenuFormData = z.infer<typeof menuSchema>;
+export type MenuFormData = z.infer<typeof menuFormSchema>;

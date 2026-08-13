@@ -19,6 +19,7 @@ const HomePage = React.lazy(() => import("@/pages/HomePage"));
 const MenuPage = React.lazy(() => import("@/pages/MenuPage"));
 const BaristaPage = React.lazy(() => import("@/pages/BaristaPage"));
 const OrdersPage = React.lazy(() => import("@/pages/OrdersPage"));
+const MenuPageShow = React.lazy(() => import("@/pages/MenuPageShow"));
 
 export const routesConfig: RouteConfig[] = [
   {
@@ -48,5 +49,11 @@ export const routesConfig: RouteConfig[] = [
     icon: ShoppingBag,
     element: OrdersPage,
     showInNav: true,
+  },
+  {
+    label: "Menu Item Details",
+    path: "/menu/:menuId",
+    element: MenuPageShow,
+    showInNav: false,
   },
 ];

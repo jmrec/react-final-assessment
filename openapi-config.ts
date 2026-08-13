@@ -21,6 +21,7 @@ const config: ConfigFile = {
     },
   },
   hooks: true,
+  tag: true,
 };
 
 export default config;

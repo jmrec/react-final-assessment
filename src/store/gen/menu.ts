@@ -1,41 +1,58 @@
 import { api } from "../emptyApi";
-const injectedRtkApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    getById: build.query<GetByIdApiResponse, GetByIdApiArg>({
-      query: (queryArg) => ({ url: `/menu/${queryArg.id}` }),
-    }),
-    update: build.mutation<UpdateApiResponse, UpdateApiArg>({
-      query: (queryArg) => ({
-        url: `/menu/${queryArg.id}`,
-        method: "PUT",
-        body: queryArg.menuItemRequest,
+export const addTagTypes = ["menu-controller"] as const;
+const injectedRtkApi = api
+  .enhanceEndpoints({
+    addTagTypes,
+  })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      getById: build.query<GetByIdApiResponse, GetByIdApiArg>({
+        query: (queryArg) => ({ url: `/menu/${queryArg.id}` }),
+        providesTags: ["menu-controller"],
+      }),
+      update: build.mutation<UpdateApiResponse, UpdateApiArg>({
+        query: (queryArg) => ({
+          url: `/menu/${queryArg.id}`,
+          method: "PUT",
+          body: queryArg.menuItemRequest,
+        }),
+        invalidatesTags: ["menu-controller"],
+      }),
+      deleteMenuById: build.mutation<
+        DeleteMenuByIdApiResponse,
+        DeleteMenuByIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/menu/${queryArg.id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["menu-controller"],
+      }),
+      getAll1: build.query<GetAll1ApiResponse, GetAll1ApiArg>({
+        query: () => ({ url: `/menu` }),
+        providesTags: ["menu-controller"],
+      }),
+      create1: build.mutation<Create1ApiResponse, Create1ApiArg>({
+        query: (queryArg) => ({
+          url: `/menu`,
+          method: "POST",
+          body: queryArg.menuItemRequest,
+        }),
+        invalidatesTags: ["menu-controller"],
+      }),
+      getByCategory: build.query<GetByCategoryApiResponse, GetByCategoryApiArg>(
+        {
+          query: (queryArg) => ({ url: `/menu/category/${queryArg.category}` }),
+          providesTags: ["menu-controller"],
+        },
+      ),
+      getAvailable: build.query<GetAvailableApiResponse, GetAvailableApiArg>({
+        query: () => ({ url: `/menu/available` }),
+        providesTags: ["menu-controller"],
       }),
     }),
-    deleteMenuById: build.mutation<
-      DeleteMenuByIdApiResponse,
-      DeleteMenuByIdApiArg
-    >({
-      query: (queryArg) => ({ url: `/menu/${queryArg.id}`, method: "DELETE" }),
-    }),
-    getAll1: build.query<GetAll1ApiResponse, GetAll1ApiArg>({
-      query: () => ({ url: `/menu` }),
-    }),
-    create1: build.mutation<Create1ApiResponse, Create1ApiArg>({
-      query: (queryArg) => ({
-        url: `/menu`,
-        method: "POST",
-        body: queryArg.menuItemRequest,
-      }),
-    }),
-    getByCategory: build.query<GetByCategoryApiResponse, GetByCategoryApiArg>({
-      query: (queryArg) => ({ url: `/menu/category/${queryArg.category}` }),
-    }),
-    getAvailable: build.query<GetAvailableApiResponse, GetAvailableApiArg>({
-      query: () => ({ url: `/menu/available` }),
-    }),
-  }),
-  overrideExisting: false,
-});
+    overrideExisting: false,
+  });
 export { injectedRtkApi as enhancedApi };
 export type GetByIdApiResponse = /** status 200 OK */ MenuItemResponse;
 export type GetByIdApiArg = {
