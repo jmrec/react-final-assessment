@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>React Assessment — Coffee Shop UI (Phase 2)</title>
+<style>
+  :root {
+    --bg: #faf6f1; --surface: #fff; --ink: #2b2018; --muted: #7d6e60;
+    --brand: #6f4e37; --brand-dark: #4b3424; --accent: #c98a3d;
+    --ok: #2e7d32; --border: #e7ddd2; --code-bg: #2b2018;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6;
+  }
+  header.hero {
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color: #fff; padding: 2.5rem 1.5rem; text-align: center;
+  }
+  header.hero h1 { margin: 0 0 .4rem; font-size: 2rem; }
+  header.hero p { margin: 0; opacity: .9; }
+  .meta-bar {
+    background: var(--accent); color: #fff; text-align: center;
+    padding: .6rem 1rem; font-weight: 600; font-size: .95rem;
+  }
+  main { width: min(900px, 92vw); margin: 2rem auto 4rem; }
+  section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1.4rem;
+    box-shadow: 0 2px 10px rgba(75,52,36,.07);
+  }
+  h2 {
+    color: var(--brand-dark); border-bottom: 2px solid var(--accent);
+    padding-bottom: .4rem; margin-top: 0;
+  }
+  h3 { color: var(--brand); margin-bottom: .3rem; }
+  .pill {
+    display: inline-block; background: #f3ebe2; color: var(--brand-dark);
+    border-radius: 999px; padding: .15rem .7rem; font-size: .78rem;
+    font-weight: 700; margin-left: .4rem;
+  }
+  code, pre { font-family: 'Cascadia Code', Consolas, monospace; }
+  code { background: #f0e7dc; padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre {
+    background: var(--code-bg); color: #f5ede2; padding: 1rem;
+    border-radius: 8px; overflow-x: auto; font-size: .86rem; line-height: 1.45;
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th, td { border: 1px solid var(--border); padding: .6rem .8rem; text-align: left; vertical-align: top; }
+  th { background: #f3ebe2; color: var(--brand-dark); font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; }
+  td.pts { text-align: center; font-weight: 700; white-space: nowrap; }
+  tr.total td { background: var(--brand); color: #fff; font-weight: 700; font-size: 1.05rem; }
+  ul.checks { list-style: none; padding-left: 0; }
+  ul.checks li { padding: .25rem 0 .25rem 1.8rem; position: relative; }
+  ul.checks li::before { content: "☐"; position: absolute; left: 0; color: var(--accent); font-size: 1.1rem; }
+  .note {
+    border-left: 4px solid var(--accent); background: #fdf6ec;
+    padding: .7rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0;
+  }
+  .grade-band { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+  .grade-band div {
+    flex: 1 1 120px; text-align: center; border-radius: 8px;
+    padding: .7rem; color: #fff; font-weight: 600;
+  }
+  .g-exc { background: #2e7d32; } .g-good { background: #689f38; }
+  .g-pass { background: #c98a3d; } .g-fail { background: #c0392b; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; margin: 2rem 0; }
+  .endpoints { font-size: .85rem; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>☕ React Assessment — Coffee Shop UI</h1>
+  <p>Phase 2 · Front-End Module · Build a React SPA on top of the Spring Boot API</p>
+</header>
+<div class="meta-bar">Time limit: 3 hours &nbsp;•&nbsp; Total: 100 points &nbsp;•&nbsp; Passing score: 70</div>
+
+<main>
+
+  <section>
+    <h2>1. Overview</h2>
+    <p>
+      You are given a working <strong>Phase 2 Spring Boot back-end</strong> for a coffee shop
+      (folder <code>phase2-solution/</code>). It exposes a REST API for the menu and orders,
+      plus an <strong>agentic AI</strong> endpoint (<code>POST /agent</code>) backed by a local
+      Ollama model and tool-calling.
+    </p>
+    <p>
+      Your task is to build a <strong>React (Vite) single-page front-end</strong> named
+      <code>coffee-shop-ui</code> that consumes this API. Your submission is graded on
+      <strong>four skill areas</strong>: CRUD operations, React Router, React Hooks
+      (including a custom hook), and integrating the agentic AI chat.
+    </p>
+    <div class="note">
+      A complete <strong>reference solution</strong> ships in the <code>coffee-shop-ui/</code>
+      folder. Instructors: use it as the answer key. Candidates: it is hidden during the exam.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Setup &amp; Prerequisites</h2>
+    <ul>
+      <li>Node.js 18+ and npm</li>
+      <li>JDK 17+ and Maven (to run the provided back-end)</li>
+      <li>A free <strong>Google Gemini API key</strong> from <a href="https://aistudio.google.com/app/apikey">Google AI Studio</a>, exported as <code>GEMINI_API_KEY</code> (only needed for the AI task)</li>
+    </ul>
+    <h3>Start the back-end</h3>
+<pre><code>cd phase2-solution/phase2-solution
+# AI task only: export your free Gemini key first
+#   PowerShell:  $env:GEMINI_API_KEY = "your-key"
+#   bash:        export GEMINI_API_KEY=your-key
+mvn spring-boot:run
+# API is live on http://localhost:8080</code></pre>
+    <h3>Scaffold your front-end</h3>
+<pre><code>npm create vite@latest coffee-shop-ui -- --template react
+cd coffee-shop-ui
+npm install
+npm install react-router-dom
+npm run dev   # http://localhost:5173</code></pre>
+    <div class="note">
+      CORS is already configured on the back-end for <code>http://localhost:5173</code>.
+      You may call the API directly, or add a Vite dev proxy for <code>/api</code>.
+    </div>
+  </section>
+
+  <section>
+    <h2>3. The API you must consume</h2>
+    <table class="endpoints">
+      <thead><tr><th>Method &amp; Path</th><th>Purpose</th><th>Body / Returns</th></tr></thead>
+      <tbody>
+        <tr><td><code>GET /menu</code></td><td>List all menu items</td><td>→ <code>[{id,name,category,price,available}]</code></td></tr>
+        <tr><td><code>GET /menu/available</code></td><td>Items orderable now</td><td>→ same shape, available only</td></tr>
+        <tr><td><code>GET /menu/{id}</code></td><td>Single item</td><td>→ one item</td></tr>
+        <tr><td><code>POST /menu</code></td><td>Create item</td><td><code>{name,category,price,available}</code> → 201</td></tr>
+        <tr><td><code>PUT /menu/{id}</code></td><td>Update item</td><td><code>{name,category,price,available}</code></td></tr>
+        <tr><td><code>DELETE /menu/{id}</code></td><td>Delete item</td><td>→ 204</td></tr>
+        <tr><td><code>POST /orders</code></td><td>Place order</td><td><code>{itemIds:[1,2]}</code> → <code>{id,itemIds,status,total}</code></td></tr>
+        <tr><td><code>GET /orders</code></td><td>List orders</td><td>→ array of orders</td></tr>
+        <tr><td><code>POST /orders/{id}/ready</code></td><td>PENDING → READY</td><td>→ updated order</td></tr>
+        <tr><td><code>POST /orders/{id}/pay</code></td><td>READY → PAID</td><td>→ updated order</td></tr>
+        <tr><td><code>POST /agent</code></td><td>Ask the AI barista</td><td>plain-text body → plain-text reply</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Tasks</h2>
+
+    <h3>Task A — Project &amp; API layer <span class="pill">10 pts</span></h3>
+    <ul class="checks">
+      <li>Vite + React project runs with <code>npm run dev</code></li>
+      <li>A single API/service module wraps all <code>fetch</code> calls (no inline URLs scattered in components)</li>
+      <li>HTTP errors are detected (non-2xx) and surfaced, not swallowed</li>
+    </ul>
+
+    <h3>Task B — CRUD: Menu management <span class="pill">30 pts</span></h3>
+    <ul class="checks">
+      <li><strong>Read:</strong> list all menu items in a table/grid with name, category, price, availability</li>
+      <li><strong>Create:</strong> a form that POSTs a new item and shows it in the list</li>
+      <li><strong>Update:</strong> edit an existing item (pre-filled form) and PUT the changes</li>
+      <li><strong>Delete:</strong> remove an item with a confirmation step; list updates without a full reload</li>
+      <li>Loading and error states are shown for each operation</li>
+    </ul>
+
+    <h3>Task C — React Router <span class="pill">20 pts</span></h3>
+    <ul class="checks">
+      <li>App wrapped in a router; at least 4 routes (e.g. Home, Menu, Orders, Barista)</li>
+      <li>A persistent nav bar using <code>NavLink</code> with an active-link style</li>
+      <li>At least one <strong>dynamic route param</strong> (e.g. <code>/menu/:id/edit</code>) read via <code>useParams</code></li>
+      <li>Programmatic navigation after an action (e.g. <code>useNavigate</code> after save) and a catch-all/404 redirect</li>
+    </ul>
+
+    <h3>Task D — Hooks <span class="pill">20 pts</span></h3>
+    <ul class="checks">
+      <li>Correct use of <code>useState</code> and <code>useEffect</code> (data fetch on mount, cleanup where needed)</li>
+      <li>At least one <strong>custom hook</strong> (e.g. <code>useMenu</code>) that encapsulates data + actions and is reused by a component</li>
+      <li>No dependency-array bugs / no infinite render loops; derived values via <code>useMemo</code> where sensible</li>
+    </ul>
+
+    <h3>Task E — Agentic AI chat <span class="pill">15 pts</span></h3>
+    <ul class="checks">
+      <li>A chat page that POSTs plain text to <code>/agent</code> and renders the reply</li>
+      <li>Maintains a running conversation log (user + agent bubbles)</li>
+      <li>Shows a "thinking" indicator while the agent works (it may call tools and take seconds)</li>
+      <li>Demonstrates a multi-step request, e.g. <em>"show available coffees, then order a latte and tell me the total"</em>, and the placed order appears on the Orders page</li>
+    </ul>
+
+    <h3>Task F — Code quality &amp; UX <span class="pill">5 pts</span></h3>
+    <ul class="checks">
+      <li>Clear component structure, sensible names, no dead code or console spam</li>
+      <li>Reasonable styling and a usable, responsive layout</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Scoring Rubric <span class="pill">100 pts</span></h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Criterion</th><th>What earns full marks</th><th class="pts">Points</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A</td><td>Project setup &amp; API service layer</td>
+          <td>App runs; centralized fetch wrapper; non-2xx errors thrown &amp; handled</td>
+          <td class="pts">10</td>
+        </tr>
+        <tr>
+          <td>B1</td><td>CRUD — Read (list)</td>
+          <td>Items fetched on mount and rendered with all fields</td>
+          <td class="pts">7</td>
+        </tr>
+        <tr>
+          <td>B2</td><td>CRUD — Create</td>
+          <td>Validated form POSTs and updates the list</td>
+          <td class="pts">7</td>
+        </tr>
+        <tr>
+          <td>B3</td><td>CRUD — Update</td>
+          <td>Pre-filled edit form PUTs changes successfully</td>
+          <td class="pts">8</td>
+        </tr>
+        <tr>
+          <td>B4</td><td>CRUD — Delete + loading/error states</td>
+          <td>Confirm-then-delete; UI updates; spinners &amp; error banners present</td>
+          <td class="pts">8</td>
+        </tr>
+        <tr>
+          <td>C1</td><td>Router setup &amp; navigation</td>
+          <td>Router configured, 4+ routes, active <code>NavLink</code> styling</td>
+          <td class="pts">10</td>
+        </tr>
+        <tr>
+          <td>C2</td><td>Dynamic params &amp; programmatic nav</td>
+          <td><code>useParams</code> route + <code>useNavigate</code> + 404 redirect</td>
+          <td class="pts">10</td>
+        </tr>
+        <tr>
+          <td>D1</td><td>Core hooks usage</td>
+          <td>Correct <code>useState</code>/<code>useEffect</code>, no loops, cleanup</td>
+          <td class="pts">10</td>
+        </tr>
+        <tr>
+          <td>D2</td><td>Custom hook</td>
+          <td>A reusable hook encapsulates state + side effects and is consumed by a component</td>
+          <td class="pts">10</td>
+        </tr>
+        <tr>
+          <td>E1</td><td>Agent request/response</td>
+          <td>Plain-text POST to <code>/agent</code>, reply rendered, thinking indicator</td>
+          <td class="pts">8</td>
+        </tr>
+        <tr>
+          <td>E2</td><td>Agent multi-step / persistence</td>
+          <td>Multi-step prompt works; resulting order is visible on Orders page</td>
+          <td class="pts">7</td>
+        </tr>
+        <tr>
+          <td>F</td><td>Code quality &amp; UX</td>
+          <td>Clean structure, naming, styling, responsiveness</td>
+          <td class="pts">5</td>
+        </tr>
+        <tr class="total"><td colspan="3">TOTAL</td><td class="pts">100</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:1.4rem;">Grade bands</h3>
+    <div class="grade-band">
+      <div class="g-exc">90–100<br>Excellent</div>
+      <div class="g-good">80–89<br>Strong</div>
+      <div class="g-pass">70–79<br>Pass</div>
+      <div class="g-fail">&lt; 70<br>Not yet</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>6. Bonus (up to +10, capped at 100)</h2>
+    <ul class="checks">
+      <li><strong>+4</strong> — Filter/search the menu by category using <code>GET /menu/category/{category}</code></li>
+      <li><strong>+3</strong> — Order builder with a live running total before placing the order</li>
+      <li><strong>+3</strong> — Suggested-prompt buttons and auto-scroll in the AI chat</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Submission</h2>
+    <ul class="checks">
+      <li>Source committed (exclude <code>node_modules</code>); a <code>README.md</code> with run instructions</li>
+      <li>Back-end runnable and front-end starts cleanly with <code>npm install &amp;&amp; npm run dev</code></li>
+      <li>State clearly if the AI task was tested with or without a Gemini API key configured</li>
+    </ul>
+    <div class="note">
+      <strong>Auto-fail conditions:</strong> the project does not start, secrets/credentials committed,
+      or the work is not your own.
+    </div>
+  </section>
+
+</main>
+
+<footer>STI Module · Coffee Shop React Assessment · Phase 2 — generated reference instructions</footer>
+
+</body>
+</html>
