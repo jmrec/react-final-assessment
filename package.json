@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "codegen:zod": "ts-to-zod ./src/store/gen/menu.ts ./src/schemas/gen/menu.zod.ts --skipValidation",
+    "codegen:zod": "node scripts/gen-zod.cjs",
     "codegen:rtk": "npx @rtk-query/codegen-openapi openapi-config.ts",
     "codegen:all": "npm run codegen:rtk && npm run codegen:zod"
   },
@@ -40,6 +40,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "esbuild-runner": "^2.2.2",
+    "glob": "^13.0.6",
     "oxlint": "^1.75.0",
     "ts-to-zod": "^5.1.0",
     "typescript": "~6.0.2",

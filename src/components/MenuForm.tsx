@@ -101,7 +101,7 @@ export const MenuForm: React.FC<MenuFormProps> = ({
         />
 
         <Controller
-          name="isAvailable"
+          name="available"
           control={control}
           render={({ field, fieldState }) => (
             <Field
@@ -110,6 +110,7 @@ export const MenuForm: React.FC<MenuFormProps> = ({
             >
               <Checkbox
                 id="menu-form-available"
+                className="size-4!"
                 checked={!!field.value}
                 onCheckedChange={field.onChange}
                 aria-invalid={fieldState.invalid}

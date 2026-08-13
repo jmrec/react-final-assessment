@@ -2,6 +2,7 @@ import { MenuForm } from "@/components/MenuForm";
 import type { MenuFormData } from "@/schemas/menuFormSchema";
 import { useCreate1Mutation, useUpdateMutation } from "@/store/gen/menu";
 import { useMenuForm } from "@/hooks/useMenuForm";
+import { useToast } from "@/hooks/useToast";
 import {
   SheetContent,
   SheetDescription,
@@ -22,10 +23,14 @@ export const MenuManageSheet: React.FC<MenuManageSheetProps> = ({
 }) => {
   const [createMenuItem] = useCreate1Mutation();
   const [updateMenuItem] = useUpdateMutation();
+  const { menuCreated, menuUpdated, menuCreateFailed, menuUpdateFailed } =
+    useToast();
 
   const handleFormSubmit = async (data: MenuFormData) => {
+    const isEdit = !!(existingMenuItem && menuItemId);
+
     try {
-      if (existingMenuItem && menuItemId) {
+      if (isEdit) {
         const numericId =
           typeof menuItemId === "string"
             ? parseInt(menuItemId, 10)
@@ -34,14 +39,21 @@ export const MenuManageSheet: React.FC<MenuManageSheetProps> = ({
           id: numericId,
           menuItemRequest: data,
         }).unwrap();
+        menuUpdated(data.name);
       } else {
         await createMenuItem({
           menuItemRequest: data,
         }).unwrap();
+        menuCreated(data.name);
       }
       onClose();
     } catch (error) {
       console.error("Failed to save menu item:", error);
+      if (isEdit) {
+        menuUpdateFailed();
+      } else {
+        menuCreateFailed();
+      }
     }
   };
 

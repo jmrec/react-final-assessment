@@ -2,24 +2,26 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: oklch(0.922 0 0);
-  --code-bg: #f4f3ec;
-  --accent: oklch(0.97 0 0);
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --text: #4a443a;
+  --text-h: #26221b;
+  --bg: #f6f1e7;
+  --border: #e2d8c3;
+  --code-bg: #ece4d4;
+  --accent: #ece3d1;
+  --accent-bg: rgba(179, 64, 42, 0.1);
+  --accent-border: rgba(179, 64, 42, 0.5);
+  --social-bg: rgba(246, 241, 231, 0.6);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --sans: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic",
+    system-ui, sans-serif;
+  --heading: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -36,37 +38,37 @@
     font-size: 16px;
   }
 
-  --background: oklch(1 0 0);
+  --background: #f6f1e7;
 
-  --foreground: oklch(0.145 0 0);
+  --foreground: #26221b;
 
-  --card: oklch(1 0 0);
+  --card: #fdfbf6;
 
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: #26221b;
 
-  --popover: oklch(1 0 0);
+  --popover: #fdfbf6;
 
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: #26221b;
 
-  --primary: oklch(0.205 0 0);
+  --primary: #b3402a;
 
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: #fdfbf6;
 
-  --secondary: oklch(0.97 0 0);
+  --secondary: #ece3d1;
 
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: #26221b;
 
-  --muted: oklch(0.97 0 0);
+  --muted: #efe8da;
 
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: #6f6859;
 
-  --accent-foreground: oklch(0.205 0 0);
+  --accent-foreground: #26221b;
 
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: #b3261e;
 
-  --input: oklch(0.922 0 0);
+  --input: #e2d8c3;
 
-  --ring: oklch(0.708 0 0);
+  --ring: #b3402a;
 
   --chart-1: oklch(0.87 0 0);
 
@@ -78,7 +80,7 @@
 
   --chart-5: oklch(0.269 0 0);
 
-  --radius: 0.625rem;
+  --radius: 0.375rem;
 
   --sidebar: oklch(0.985 0 0);
 
@@ -137,7 +139,7 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--foreground);
 }
 
 h1 {
@@ -178,8 +180,10 @@ code {
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Inter Variable', sans-serif;
+  --font-heading: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho",
+    serif;
+  --font-sans: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic",
+    system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -220,6 +224,11 @@ code {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@theme {
+  --color-vermilion: #b3402a;
+  --color-aiiro: #1f3a5f;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -254,6 +263,13 @@ code {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+.washi-texture {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(179, 64, 42, 0.05), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(31, 58, 95, 0.04), transparent 40%),
+    radial-gradient(circle at 55% 85%, rgba(179, 64, 42, 0.03), transparent 48%);
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;}

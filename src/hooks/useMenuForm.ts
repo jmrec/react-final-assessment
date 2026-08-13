@@ -16,14 +16,14 @@ export const useMenuForm = ({ initialData, onSubmit }: useMenuFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<MenuFormData>({
     resolver: zodResolver(menuFormSchema),
-    defaultValues: initialData || { name: "", price: 0, category: "" },
+    defaultValues: initialData || { name: "", price: 0, category: "", available: true },
   });
 
   useEffect(() => {
     if (initialData) {
       reset(initialData);
     } else {
-      reset({ name: "", price: 0, category: "" });
+      reset({ name: "", price: 0, category: "", available: true });
     }
   }, [initialData, reset]);
 

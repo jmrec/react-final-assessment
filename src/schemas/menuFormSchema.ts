@@ -7,7 +7,7 @@ export const menuFormSchema = z.object({
   price: z.coerce
     .number("Price must be a number")
     .gt(0, "Price must be greater than 0") as ZodNumber,
-  isAvailable: z.boolean("Specify if available"),
+  available: z.boolean("Specify if available"),
 });
 
 export type MenuFormData = z.infer<typeof menuFormSchema>;

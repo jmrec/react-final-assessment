@@ -19,7 +19,8 @@ const HomePage = React.lazy(() => import("@/pages/HomePage"));
 const MenuPage = React.lazy(() => import("@/pages/MenuPage"));
 const BaristaPage = React.lazy(() => import("@/pages/BaristaPage"));
 const OrdersPage = React.lazy(() => import("@/pages/OrdersPage"));
-const MenuPageShow = React.lazy(() => import("@/pages/MenuPageShow"));
+const ErrorPage = React.lazy(() => import("@/pages/ErrorPage"));
+const OrdersPageShow = React.lazy(() => import("@/pages/OrdersPageShow"));
 
 export const routesConfig: RouteConfig[] = [
   {
@@ -51,9 +52,15 @@ export const routesConfig: RouteConfig[] = [
     showInNav: true,
   },
   {
-    label: "Menu Item Details",
-    path: "/menu/:menuId",
-    element: MenuPageShow,
+    label: "Order Details",
+    path: "/orders/:orderId",
+    element: OrdersPageShow,
     showInNav: false,
   },
+  {
+    label: "Error Page",
+    path: "*",
+    element: ErrorPage,
+    showInNav: false,
+  }
 ];
