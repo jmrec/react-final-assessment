@@ -18,6 +18,14 @@ const config: ConfigFile = {
       filterEndpoints: (endpointName, operationDefinition) =>
         /agent/i.test(endpointName) ||
         operationDefinition.path.includes("/agent"),
+      endpointOverrides: [
+        {
+          pattern: (_operationName, operationDefinition) =>
+            operationDefinition.path === "/agent" &&
+            operationDefinition.verb === "post",
+          invalidatesTags: ["agent-controller", "order-controller"],
+        },
+      ],
     },
   },
   hooks: true,

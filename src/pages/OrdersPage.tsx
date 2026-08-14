@@ -63,18 +63,18 @@ export default function OrdersPage() {
       </div>
 
       {isLoading && (
-        <div className="text-center py-8 text-gray-500">Loading orders...</div>
+        <div className="text-center py-8 text-muted-foreground">Loading orders...</div>
       )}
 
       {isError && (
-        <div className="text-red-500 p-4 border border-red-200 bg-red-50 rounded-md mb-6">
+        <div className="text-destructive p-4 border border-destructive/20 bg-destructive/10 rounded-md mb-6">
           We couldn't load your orders right now. Please try again in a moment.
         </div>
       )}
 
       {!isLoading && !isError && (
         <>
-          <div className="rounded-md border bg-white shadow-sm overflow-hidden">
+          <div className="rounded-md border bg-card shadow-sm overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -90,7 +90,7 @@ export default function OrdersPage() {
                   <TableRow>
                     <TableCell
                       colSpan={5}
-                      className="h-24 text-center text-gray-500"
+                      className="h-24 text-center text-muted-foreground"
                     >
                       No orders found.
                     </TableCell>

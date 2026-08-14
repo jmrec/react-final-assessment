@@ -37,7 +37,6 @@ export function useToast() {
     [],
   );
 
-  // Menu item lifecycle toasts
   const menuCreated = useCallback((name: string) => {
     toast.add({
       type: "success",

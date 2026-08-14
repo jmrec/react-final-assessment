@@ -18,5 +18,6 @@ export const api = createApi({
 
     return rawBaseQuery(args, api, extraOptions);
   },
+  tagTypes: ["menu-controller", "order-controller", "agent-controller"],
   endpoints: () => ({}),
 });

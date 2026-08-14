@@ -12,7 +12,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.body,
         }),
-        invalidatesTags: ["agent-controller"],
+        invalidatesTags: ["agent-controller", "order-controller"],
       }),
     }),
     overrideExisting: false,

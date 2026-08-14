@@ -7,43 +7,45 @@ interface Patron {
   spanClassName?: string;
 }
 
+const BASE_URL = "https://assets.jmrecondo.com/react-assessment/"
+
 const PATRONS: Patron[] = [
   {
     name: "Jung Eunbi",
-    imageUrl: "https://pbs.twimg.com/media/DHNeH_BXUAAAsOt?format=jpg&name=large",
+    imageUrl: `${BASE_URL}jung_eunbi.webp`,
     spanClassName: "sm:col-span-2 lg:row-span-2",
   },
   {
     name: "Kang Jiyoung",
-    imageUrl: "https://alchetron.com/cdn/kang-ji-yong-d82753e9-24ec-42ce-9e0a-aa684236b8a-resize-750.png",
+    imageUrl: `${BASE_URL}kang_jiyoung.webp`,
   },
   {
     name: "Choi Yuna",
-    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwqA19eij4lKR1sgvYcv2vwL8iWqd8MgVp3NuJgKqbfA&s",
+    imageUrl: `${BASE_URL}choi_yuna.webp`,
   },
   {
     name: "Kim Yewon",
-    imageUrl: "https://kprofiles.com/wp-content/uploads/2016/06/UMJI-1-900x600.jpg",
+    imageUrl: `${BASE_URL}kim_yewon.webp`,
   },
   {
     name: "Goo Hara",
-    imageUrl: "https://gbaike-image.cdn.bcebos.com/8b82b9014a90f603738d8102fd48a41bb051f8194779/8b82b9014a90f603738d8102fd48a41bb051f8194779_url?x-bce-process=image/format,f_auto/watermark,image_d2F0ZXJtYXJrL3dhdGVybWFyaw,t_60,g_7,xp_5,yp_2,P_20",
+    imageUrl: `${BASE_URL}goo_hara.webp`,
   },
   {
-    name: "Lee Hyomin",
-    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmjSvOU-ntj6uJuEKapguEyo-6b8Z_PJ_dCOHO2RwJ9w&s",
+    name: "Park Sunyoung",
+    imageUrl: `${BASE_URL}park_sunyoung.webp`,
   },
   {
     name: "Park Jiyeon",
-    imageUrl: "https://legacy.kpopping.com/ee/4/250420-T-ara-Jiyeon-Weibo-update-documents-1.jpeg",
+    imageUrl: `${BASE_URL}park_jiyeon.webp`,
   },
   {
     name: "Heo Youngji",
-    imageUrl: "https://araisyahfitria.wordpress.com/wp-content/uploads/2014/12/osen-interview-1.jpg",
+    imageUrl: `${BASE_URL}heo_youngji.webp`,
   },
   {
     name: "Hong Eunchae",
-    imageUrl: "https://preview.redd.it/250915-hong-eunchae-instagram-update-v0-r2vxiszbk8pf1.jpg?width=640&crop=smart&auto=webp&s=856e0b553bae9de85cad1ef133c1959a95c7ef06"
+    imageUrl: `${BASE_URL}hong_eunchae.webp`
   }
 ];
 
@@ -58,7 +60,7 @@ export default function PatronsPage() {
         {PATRONS.map((patron, index) => (
           <Card
             key={index}
-            className={cn("relative overflow-hidden", patron.spanClassName)}
+            className={cn("relative overflow-hidden hover:scale-105 transition-all duration-300", patron.spanClassName)}
           >
             <img
                 referrerPolicy="no-referrer"

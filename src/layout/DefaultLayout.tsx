@@ -15,10 +15,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "@/components/theme-provider";
 
 export default function DefaultLayout() {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const isDark =
+    theme === "dark" ||
+    (theme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
     <div className="washi-texture flex min-h-screen flex-col bg-background text-foreground">
@@ -27,6 +34,18 @@ export default function DefaultLayout() {
           <span className="font-heading text-[11px] tracking-[0.5em] text-muted-foreground">
             珈琲
           </span>
+          <div className="flex items-center gap-2">
+            <Sun className="h-3.5 w-3.5 text-muted-foreground" />
+            <Switch
+              size="sm"
+              checked={isDark}
+              onCheckedChange={(checked) =>
+                setTheme(checked ? "dark" : "light")
+              }
+              aria-label="Toggle theme"
+            />
+            <Moon className="h-3.5 w-3.5 text-muted-foreground" />
+          </div>
         </div>
       </div>
 

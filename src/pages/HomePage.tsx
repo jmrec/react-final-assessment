@@ -3,8 +3,10 @@ import {
   CheckCircle2,
   CircleDollarSign,
   Coffee,
+  Crown,
   Loader2,
   ShoppingBag,
+  TrendingUp,
 } from "lucide-react";
 import {
   Card,
@@ -46,6 +48,62 @@ export default function HomePage() {
       .reduce((sum, o) => sum + (o.total ?? 0), 0);
     return { pending, ready, paid, revenue };
   }, [orders]);
+
+  const mostPopularCategory = useMemo(() => {
+    const itemCounts = new Map<number, number>();
+    const categoryCounts = new Map<string, number>();
+    for (const order of orders) {
+      for (const itemId of order.itemIds ?? []) {
+        itemCounts.set(itemId, (itemCounts.get(itemId) ?? 0) + 1);
+
+        const item = menuItems.find((m) => m.id === itemId);
+        const category = item?.category?.trim() || "Uncategorized";
+        categoryCounts.set(category, (categoryCounts.get(category) ?? 0) + 1);
+      }
+    }
+
+    let name = "";
+    let sold = 0;
+    for (const [category, count] of categoryCounts) {
+      if (count > sold) {
+        name = category;
+        sold = count;
+      }
+    }
+
+    const items = menuItems
+      .filter((m) => (m.category?.trim() || "Uncategorized") === name)
+      .map((m) => ({
+        id: m.id,
+        name: m.name,
+        count: m.id != null ? (itemCounts.get(m.id) ?? 0) : 0,
+      }))
+      .filter((item) => item.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    return { name, sold, items };
+  }, [orders, menuItems]);
+
+  const popularItems = useMemo(() => {
+    const counts = new Map<number, number>();
+    for (const order of orders) {
+      for (const itemId of order.itemIds ?? []) {
+        counts.set(itemId, (counts.get(itemId) ?? 0) + 1);
+      }
+    }
+
+    return Array.from(counts.entries())
+      .map(([id, count]) => {
+        const item = menuItems.find((m) => m.id === id);
+        return {
+          id,
+          name: item?.name ?? `Item #${id}`,
+          count,
+        };
+      })
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  }, [orders, menuItems]);
 
   const cards = [
     {
@@ -110,6 +168,87 @@ export default function HomePage() {
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Most Popular Category
+              <Crown className="h-4 w-4 text-muted-foreground" />
+            </CardTitle>
+            <CardDescription className="text-left">
+              Based on items ordered
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {mostPopularCategory.sold === 0 ? (
+              <p className="text-sm text-muted-foreground">No orders yet.</p>
+            ) : (
+              <>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-3xl font-bold capitalize">
+                    {mostPopularCategory.name}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {mostPopularCategory.sold} sold
+                  </span>
+                </div>
+                <ul className="divide-y divide-border">
+                  {mostPopularCategory.items.map((item) => (
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between py-2"
+                    >
+                      <span className="font-medium">{item.name}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {item.count} sold
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Popular Items
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardTitle>
+            <CardDescription className="text-left">
+              Most ordered across all orders
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {popularItems.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No items ordered yet.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {popularItems.map((item, index) => (
+                  <li
+                    key={item.id}
+                    className="flex items-center justify-between py-2"
+                  >
+                    <span className="flex items-center gap-3 font-medium">
+                      <span className="w-4 text-sm text-muted-foreground">
+                        {index + 1}
+                      </span>
+                      {item.name}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {item.count} sold
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

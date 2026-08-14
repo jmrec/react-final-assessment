@@ -37,12 +37,18 @@ export default function OrdersPageShow() {
     );
   }
 
-  const orderedItems = (order.itemIds ?? []).map((itemId, index) => {
+  const counts = new Map<number, number>();
+  for (const itemId of order.itemIds ?? []) {
+    counts.set(itemId, (counts.get(itemId) ?? 0) + 1);
+  }
+
+  const orderedItems = Array.from(counts.entries()).map(([itemId, quantity]) => {
     const item = menuItems.find((m) => m.id === itemId);
     return {
-      key: `${itemId}-${index}`,
+      key: String(itemId),
       name: item?.name ?? `Item #${itemId}`,
       price: item?.price,
+      quantity,
     };
   });
 
@@ -89,9 +95,18 @@ export default function OrdersPageShow() {
                   key={item.key}
                   className="flex items-center justify-between py-2"
                 >
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium">
+                    {item.name}
+                    {item.quantity > 1 && (
+                      <span className="ml-2 text-muted-foreground text-sm">
+                        × {item.quantity}
+                      </span>
+                    )}
+                  </span>
                   <span className="text-muted-foreground">
-                    {item.price != null ? `$${item.price.toFixed(2)}` : "—"}
+                    {item.price != null
+                      ? `$${(item.price * item.quantity).toFixed(2)}`
+                      : "—"}
                   </span>
                 </li>
               ))}
