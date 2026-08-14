@@ -38,7 +38,7 @@ npm start
 
 `npm start` downloads the server jar into `bin/` on first run (from `https://assets.jmrecondo.com/react-assessment/jm-coffeeshop.jar`), then launches both processes with `concurrently`:
 
-> [!NOTE] URLs
+> [!NOTE]
 > Spring Boot API: [http://localhost:8080](http://localhost:8080)
 > 
 > Vite dev server: [http://localhost:5173](http://localhost:5173)
