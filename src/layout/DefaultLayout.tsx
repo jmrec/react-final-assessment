@@ -66,7 +66,7 @@ export default function DefaultLayout() {
             </span>
           </NavLink>
 
-          <NavigationMenu className="hidden md:flex">
+          <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="gap-1">
               {routesConfig
                 .filter((route) => route.showInNav)
@@ -113,7 +113,7 @@ export default function DefaultLayout() {
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
-                <Button variant="ghost" size="icon-sm" className="md:hidden" />
+                <Button variant="ghost" size="icon-sm" className="lg:hidden" />
               }
             >
               <Menu />
