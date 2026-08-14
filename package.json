@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node scripts/download-jar.mjs && java -jar bin/jm-coffeeshop.jar",
+    "start": "concurrently -k -n server,web -c yellow,cyan \"npm run server\" \"npm run dev\"",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
@@ -39,6 +41,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "concurrently": "^10.0.4",
     "esbuild-runner": "^2.2.2",
     "glob": "^13.0.6",
     "oxlint": "^1.75.0",
