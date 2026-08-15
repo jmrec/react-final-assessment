@@ -3,10 +3,16 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
 } from "@/components/ui/navigation-menu";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  NavLink,
+  useNavigate,
+  useLocation,
+  matchPath,
+} from "react-router-dom";
 import { routesConfig } from "@/config/routes";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,11 +27,25 @@ import { useTheme } from "@/components/theme-provider";
 
 export default function DefaultLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, setTheme } = useTheme();
   const isDark =
     theme === "dark" ||
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  useEffect(() => {
+    const { pathname } = location;
+    const route = routesConfig.find((r) => {
+      if (r.path === "*") return false;
+      return matchPath(r.path, pathname) !== null;
+    });
+
+    document.title =
+      route && route.path !== "/"
+        ? `JM's Coffee Shop | ${route.label}`
+        : "JM's Coffee Shop";
+  }, [location.pathname]);
 
   return (
     <div className="washi-texture flex min-h-screen flex-col bg-background text-foreground">
