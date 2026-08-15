@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "server": "node scripts/download-jar.mjs && java -jar bin/jm-coffeeshop.jar",
-    "start": "concurrently -k -n server,web -c yellow,cyan \"npm run server\" \"npm run dev\"",
+    "start": "npx concurrently -k -n server,web -c yellow,cyan \"npm run server\" \"npm run dev\"",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
