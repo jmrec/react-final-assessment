@@ -61,7 +61,7 @@ export default function DefaultLayout() {
                 JM's Coffee Shop
               </span>
               <span className="relative mt-1.5 text-[10px] tracking-[0.35em] text-muted-foreground">
-                喫茶 KISSA
+                喫茶店
               </span>
             </span>
           </NavLink>
