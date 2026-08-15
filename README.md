@@ -9,14 +9,26 @@ An SPA frontend for the Spring Boot coffee shop server. It provides full menu ma
 Built with Vite, React, and TypeScript.
 
 > [!IMPORTANT]
-> AI task tested with `GEMINI_API_KEY` configured
+> AI task tested with `GEMINI_API_KEY` configured.
+>
+> Project tested with the following:
+> ```bash
+> node --version
+> # v24.16.0
+> 
+> npm --version
+> # 11.13.0
+>
+> java --version
+> # openjdk 21.0.11 2026-04-21 LTS
+> ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- JDK 17+
+- Node.js 24+ and npm 11+
+- JDK 21+
 - OPTIONAL: a free Google Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
 ### Option A — Automated (recommended)
