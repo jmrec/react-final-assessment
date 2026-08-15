@@ -52,8 +52,13 @@ const PATRONS: Patron[] = [
 export default function PatronsPage() {
   return (
     <div>
-      <div className="mb-7">
-        <h1 className="text-2xl font-bold">Patrons</h1>
+      <div className="mb-7 flex flex-col gap-1">
+        <h1 className="text-2xl font-bold">
+          Patrons{" "}
+          <span className="text-lg font-normal italic text-muted-foreground">
+            (I hope)
+          </span>
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-40 sm:auto-rows-45 gap-4">
